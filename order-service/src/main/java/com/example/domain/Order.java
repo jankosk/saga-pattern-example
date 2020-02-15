@@ -1,4 +1,4 @@
-package order.service.domain;
+package com.example.domain;
 
 import javax.persistence.*;
 
@@ -11,7 +11,7 @@ public class Order {
     private Long id;
     private String customerId;
     private String itemId;
-    private String status;
+    private OrderStatus status;
 
     public Order() {}
 
@@ -36,11 +36,11 @@ public class Order {
         this.customerId = customerId;
     }
 
-    public String getStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String state) {
+    public void setStatus(OrderStatus state) {
         this.status = state;
     }
 

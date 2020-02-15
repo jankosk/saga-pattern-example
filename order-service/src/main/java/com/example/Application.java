@@ -1,4 +1,4 @@
-package order.service;
+package com.example;
 
 import io.micronaut.runtime.Micronaut;
 

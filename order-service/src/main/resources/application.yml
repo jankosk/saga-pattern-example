@@ -6,7 +6,7 @@ micronaut:
 ---
 kafka:
   bootstrap:
-    servers: localhost:9092
+    servers: 127.0.0.1:9092
 ---
 datasources:
   default:
@@ -20,7 +20,7 @@ jpa:
   default:
     entity-scan:
       packages:
-        - 'order.service.domain'
+        - 'com.example.domain'
     properties:
       hibernate:
         hbm2ddl:

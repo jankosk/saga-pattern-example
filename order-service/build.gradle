@@ -6,7 +6,7 @@ plugins {
 
 
 version "0.1"
-group "order.service"
+group "com.example"
 
 repositories {
     mavenCentral()
@@ -46,7 +46,7 @@ dependencies {
 
 test.classpath += configurations.developmentOnly
 
-mainClassName = "order.service.Application"
+mainClassName = "com.example.Application"
 // use JUnit 5 platform
 test {
     useJUnitPlatform()
