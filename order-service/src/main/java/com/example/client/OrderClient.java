@@ -11,5 +11,5 @@ public interface OrderClient {
     @Topic("order")
     void createOrder(@KafkaKey Long id, Order order);
 
-    void cancelOrder(@KafkaKey Long id, @Body Order order);
+    void cancelOrder(@KafkaKey Long id, Order order);
 }
