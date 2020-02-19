@@ -1,6 +1,7 @@
 package com.example.listener;
 
 
+import com.example.Event;
 import com.example.integration.Order;
 import io.micronaut.configuration.kafka.annotation.KafkaKey;
 import io.micronaut.configuration.kafka.annotation.KafkaListener;
@@ -15,7 +16,10 @@ public class OrderListener {
     private Logger logger = LoggerFactory.getLogger(OrderListener.class);
 
     @Topic("order")
-    public void receive(@KafkaKey Long orderId, Order order) {
-        logger.info("RECEIVED ORDER " + order);
+    public void receive(@KafkaKey Long orderId, Event<Order> event) {
+        switch (event.type) {
+            case ORDER_CREATED, ORDER_REJECTED ->
+                    logger.info("RECEIVED EVENT: " + event.type + " PAYLOAD: " + event.payload);
+        }
     }
 }

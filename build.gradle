@@ -2,12 +2,13 @@
 subprojects {
 
     repositories {
+
+        apply plugin: "java"
+
         jcenter()
         mavenCentral()
         maven { url "https://jcenter.bintray.com" }
     }
 
 }
-
-
 

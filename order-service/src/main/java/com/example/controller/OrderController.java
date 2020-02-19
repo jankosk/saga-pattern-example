@@ -1,5 +1,7 @@
 package com.example.controller;
 
+import com.example.Event;
+import com.example.EventType;
 import com.example.client.OrderClient;
 import com.example.repository.OrderRepository;
 import io.micronaut.http.annotation.Body;
@@ -40,12 +42,15 @@ public class OrderController {
     }
 
     @Post
-    @Transactional
     public Order createOrder(@Body Order order) {
         order.setStatus(OrderStatus.PENDING);
         var saved_order = orderRepository.save(order);
-        logger.info("ORDER " + order.getId() + " CREATED");
-        orderClient.createOrder(saved_order.getId(), saved_order);
+
+        var event = new Event<>(EventType.ORDER_CREATED, saved_order);
+        orderClient.createOrder(saved_order.getId(), event);
+
+        logger.info(event.type + " " + event.payload);
+
         return saved_order;
     }
 
