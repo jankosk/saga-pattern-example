@@ -17,7 +17,7 @@ public class CustomerController {
     private CustomerRepository customerRepository;
 
     @Get
-    public Optional<Customer> getCustomerById(Long id) {
+    public Optional<Customer> getCustomerById(String id) {
         return customerRepository.findById(id);
     }
 

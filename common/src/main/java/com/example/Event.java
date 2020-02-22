@@ -1,10 +1,12 @@
 package com.example;
 
-public class Event<T> {
+import java.io.Serializable;
 
-    public EventType type;
+public class Event<T> implements Serializable {
 
-    public T payload;
+    private EventType type;
+
+    private T payload;
 
     public Event() {}
 
@@ -13,4 +15,11 @@ public class Event<T> {
         this.type = type;
     }
 
+    public EventType getType() {
+        return type;
+    }
+
+    public T getPayload() {
+        return payload;
+    }
 }

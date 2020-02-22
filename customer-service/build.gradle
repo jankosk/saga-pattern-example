@@ -42,6 +42,7 @@ shadowJar {
 }
 
 tasks.withType(JavaCompile) {
+    options.compilerArgs += "-Xlint:preview"
     options.compilerArgs += "--enable-preview"
 }
 

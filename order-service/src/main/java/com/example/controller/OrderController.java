@@ -3,6 +3,7 @@ package com.example.controller;
 import com.example.Event;
 import com.example.EventType;
 import com.example.client.OrderClient;
+import com.example.domain.OrderEvent;
 import com.example.repository.OrderRepository;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
@@ -10,6 +11,7 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
 import com.example.domain.Order;
 import com.example.domain.OrderStatus;
+import io.micronaut.validation.Validated;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Validated
 @Controller("/order")
 public class OrderController {
 
@@ -46,10 +49,9 @@ public class OrderController {
         order.setStatus(OrderStatus.PENDING);
         var saved_order = orderRepository.save(order);
 
-        var event = new Event<>(EventType.ORDER_CREATED, saved_order);
-        orderClient.createOrder(saved_order.getId(), event);
+        orderClient.send(saved_order.getId(), new OrderEvent(EventType.ORDER_CREATED, saved_order));
 
-        logger.info(event.type + " " + event.payload);
+        logger.info("ORDER CREATED: " + saved_order);
 
         return saved_order;
     }
