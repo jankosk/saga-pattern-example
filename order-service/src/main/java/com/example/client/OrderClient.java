@@ -1,7 +1,5 @@
 package com.example.client;
 
-import com.example.Event;
-import com.example.domain.Order;
 import com.example.domain.OrderEvent;
 import io.micronaut.configuration.kafka.annotation.KafkaClient;
 import io.micronaut.configuration.kafka.annotation.KafkaKey;

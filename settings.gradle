@@ -10,4 +10,5 @@
 rootProject.name = 'saga-pattern-example'
 include 'order-service'
 include 'customer-service'
+include 'inventory-service'
 include 'common'

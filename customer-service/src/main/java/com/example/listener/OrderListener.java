@@ -1,7 +1,5 @@
 package com.example.listener;
 
-
-import com.example.Event;
 import com.example.client.CustomerClient;
 import com.example.integration.Order;
 import com.example.integration.OrderEvent;
