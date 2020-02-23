@@ -1,6 +1,7 @@
 package com.example.integration;
 
 import com.example.EventType;
+import com.example.domain.Order;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

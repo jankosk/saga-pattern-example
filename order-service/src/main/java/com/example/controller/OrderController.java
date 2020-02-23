@@ -18,6 +18,8 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Validated
 @Controller("/order")
@@ -37,9 +39,9 @@ public class OrderController {
 
     @Get
     public List<Order> getAllOrders() {
-        List<Order> orderList = new ArrayList<>();
-        orderRepository.findAll().forEach(orderList::add);
-        return orderList;
+        var orderIter = orderRepository.findAll();
+        return StreamSupport.stream(orderIter.spliterator(), false)
+                .collect(Collectors.toList());
     }
 
     @Post

@@ -26,10 +26,10 @@ public class InventoryListener {
 
     @Topic("inventory")
     public void receive(@Body InventoryOrderEvent event) {
+        logger.info("RECEIVED EVENT: " + event);
         switch (event.getType()) {
             case ORDER_ITEM_RESERVED -> {
                 var order = event.getOrder();
-                logger.info("RECEIVED EVENT: " + event.getType());
                 var customerOpt = customerRepository.findById(order.getCustomerId());
                 customerOpt.ifPresentOrElse(customer -> {
                     var funds = customer.getCredit();
@@ -39,13 +39,14 @@ public class InventoryListener {
                         customerRepository.update(customer);
                         var customerOrderEvent = new CustomerOrderEvent(EventType.ORDER_PAID, customer, order);
                         customerClient.sendCustomerOrderEvent(customerOrderEvent);
-                        logger.info("ORDER_PAID: " + customer);
+                        logger.info("ORDER PAID: " + customer);
                     } else {
                         logger.info("NOT ENOUGH CREDITS: " + customer);
+                        var customerOrderEvent = new CustomerOrderEvent(EventType.ORDER_PAYMENT_FAILURE, customer, order);
+                        customerClient.sendCustomerOrderEvent(customerOrderEvent);
                     }
-                }, () -> logger.info("CUSTOMER " + order.getCustomerId() + " NOT FOUND"));
+                }, () -> logger.error("CUSTOMER " + order.getCustomerId() + " NOT FOUND"));
             }
-            case ORDER_ITEM_OUT_OF_STOCK -> {}
         }
     }
 

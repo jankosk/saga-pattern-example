@@ -8,7 +8,10 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
 
 import javax.inject.Inject;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Controller("/customer")
 public class CustomerController {
@@ -19,6 +22,13 @@ public class CustomerController {
     @Get("/{customerId}")
     public Optional<Customer> getCustomerById(String customerId) {
         return customerRepository.findById(customerId);
+    }
+
+    @Get
+    public List<Customer> getAllCustomers() {
+        var customerIter = customerRepository.findAll();
+        return StreamSupport.stream(customerIter.spliterator(), false)
+            .collect(Collectors.toList());
     }
 
     @Post
