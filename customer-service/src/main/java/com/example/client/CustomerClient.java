@@ -8,6 +8,6 @@ import io.micronaut.http.annotation.Body;
 
 @KafkaClient
 public interface CustomerClient {
-    @Topic("customer")
+    @Topic("order")
     void send(@Body Event<Customer> customerEvent);
 }

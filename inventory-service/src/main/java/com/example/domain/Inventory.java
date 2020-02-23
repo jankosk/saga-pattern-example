@@ -12,8 +12,9 @@ public class Inventory {
     @GeneratedValue
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
     @NotNull
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(referencedColumnName = "itemId")
     private Item item;
 
     @NotNull
