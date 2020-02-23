@@ -2,11 +2,11 @@ package com.example.client;
 
 import com.example.domain.OrderEvent;
 import io.micronaut.configuration.kafka.annotation.KafkaClient;
-import io.micronaut.configuration.kafka.annotation.KafkaKey;
 import io.micronaut.configuration.kafka.annotation.Topic;
+import io.micronaut.messaging.annotation.Body;
 
 @KafkaClient
 public interface OrderClient {
     @Topic("order")
-    void send(@KafkaKey Long orderId, OrderEvent orderEvent);
+    void send(@Body OrderEvent orderEvent);
 }

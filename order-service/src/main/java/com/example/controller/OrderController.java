@@ -46,11 +46,8 @@ public class OrderController {
     public Order createOrder(@Body Order order) {
         order.setStatus(OrderStatus.PENDING);
         var saved_order = orderRepository.save(order);
-
-        orderClient.send(saved_order.getId(), new OrderEvent(EventType.ORDER_CREATED, saved_order));
-
+        orderClient.send(new OrderEvent(EventType.ORDER_CREATED, saved_order));
         logger.info("ORDER CREATED: " + saved_order);
-
         return saved_order;
     }
 

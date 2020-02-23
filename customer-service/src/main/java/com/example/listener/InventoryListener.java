@@ -27,7 +27,7 @@ public class InventoryListener {
     @Topic("inventory")
     public void receive(@Body InventoryOrderEvent event) {
         switch (event.getType()) {
-            case ORDER_RESERVED_FROM_INVENTORY -> {
+            case ORDER_ITEM_RESERVED -> {
                 var order = event.getOrder();
                 logger.info("RECEIVED EVENT: " + event.getType());
                 var customerOpt = customerRepository.findById(order.getCustomerId());

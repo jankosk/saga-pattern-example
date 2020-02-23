@@ -5,7 +5,6 @@ import com.example.client.InventoryClient;
 import com.example.domain.InventoryOrderEvent;
 import com.example.integration.OrderEvent;
 import com.example.repository.InventoryRepository;
-import io.micronaut.configuration.kafka.annotation.KafkaKey;
 import io.micronaut.configuration.kafka.annotation.KafkaListener;
 import io.micronaut.configuration.kafka.annotation.Topic;
 import io.micronaut.messaging.annotation.Body;
@@ -15,9 +14,9 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 
 @KafkaListener
-public class EventListener {
+public class OrderListener {
 
-    private Logger logger = LoggerFactory.getLogger(EventListener.class);
+    private Logger logger = LoggerFactory.getLogger(OrderListener.class);
 
     @Inject
     private InventoryRepository inventoryRepository;
@@ -25,7 +24,7 @@ public class EventListener {
     private InventoryClient inventoryClient;
 
     @Topic("order")
-    void receive(@KafkaKey Long orderId, @Body OrderEvent orderEvent) {
+    void receive(@Body OrderEvent orderEvent) {
         logger.info("RECEIVED EVENT: " + orderEvent);
         switch (orderEvent.getType()) {
             case ORDER_CREATED -> {
@@ -37,7 +36,7 @@ public class EventListener {
                             if (inventory.getCount() >= 1) {
                                 inventory.decrementCountBy(1);
                                 inventoryRepository.update(inventory);
-                                var event = new InventoryOrderEvent(EventType.ORDER_RESERVED_FROM_INVENTORY, inventory, order);
+                                var event = new InventoryOrderEvent(EventType.ORDER_ITEM_RESERVED, inventory, order);
                                 inventoryClient.sendInventoryOrderEvent(event);
                                 logger.info("ITEM " + itemId + " RESERVED");
                             } else {

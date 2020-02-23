@@ -38,3 +38,13 @@ shadowJar {
     mergeServiceFiles()
 }
 
+tasks.withType(JavaCompile) {
+    options.compilerArgs += "-Xlint:preview"
+    options.compilerArgs += "--enable-preview"
+}
+
+tasks.withType(JavaExec) {
+    jvmArgs += '--enable-preview'
+}
+
+

@@ -16,9 +16,9 @@ public class CustomerController {
     @Inject
     private CustomerRepository customerRepository;
 
-    @Get
-    public Optional<Customer> getCustomerById(String id) {
-        return customerRepository.findById(id);
+    @Get("/{customerId}")
+    public Optional<Customer> getCustomerById(String customerId) {
+        return customerRepository.findById(customerId);
     }
 
     @Post
