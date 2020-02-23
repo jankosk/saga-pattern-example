@@ -1,6 +1,5 @@
 package com.example.controller;
 
-import com.example.Event;
 import com.example.EventType;
 import com.example.client.OrderClient;
 import com.example.domain.OrderEvent;
@@ -16,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

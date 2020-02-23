@@ -23,11 +23,11 @@ public class Inventory {
     @NotNull
     private String location;
 
-    public int incrementCount() {
-        return this.count += 1;
+    public int incrementCountBy(int num) {
+        return this.count += num;
     }
 
-    public int decrementCount() {
-        return this.count -= 1;
+    public int decrementCountBy(int num) {
+        return this.count -= num;
     }
 }

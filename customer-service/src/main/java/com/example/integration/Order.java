@@ -1,13 +1,18 @@
 package com.example.integration;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-@Data
+@Getter
+@AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Order {
     private Long id;
     private String customerId;
-    private Product product;
+    private String itemId;
+    private double totalPrice;
     private OrderStatus status;
 }

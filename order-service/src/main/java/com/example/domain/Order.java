@@ -19,8 +19,10 @@ public class Order {
     private String customerId;
 
     @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
-    private Product product;
+    private String itemId;
+
+    @NotNull
+    private double totalPrice;
 
     @NotNull
     private OrderStatus status;

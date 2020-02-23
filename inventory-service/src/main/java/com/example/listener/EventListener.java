@@ -1,9 +1,10 @@
 package com.example.listener;
 
-import com.example.integration.Order;
+import com.example.EventType;
+import com.example.client.InventoryClient;
+import com.example.domain.InventoryOrderEvent;
 import com.example.integration.OrderEvent;
 import com.example.repository.InventoryRepository;
-import com.example.repository.ItemRepository;
 import io.micronaut.configuration.kafka.annotation.KafkaKey;
 import io.micronaut.configuration.kafka.annotation.KafkaListener;
 import io.micronaut.configuration.kafka.annotation.Topic;
@@ -12,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import java.util.concurrent.ConcurrentHashMap;
 
 @KafkaListener
 public class EventListener {
@@ -22,9 +22,7 @@ public class EventListener {
     @Inject
     private InventoryRepository inventoryRepository;
     @Inject
-    private ItemRepository itemRepository;
-
-    private ConcurrentHashMap<String, Order> pendingOrders = new ConcurrentHashMap<>();
+    private InventoryClient inventoryClient;
 
     @Topic("order")
     void receive(@KafkaKey Long orderId, @Body OrderEvent orderEvent) {
@@ -32,19 +30,22 @@ public class EventListener {
         switch (orderEvent.getType()) {
             case ORDER_CREATED -> {
                 var order = orderEvent.getOrder();
-                var itemId = order.getProduct().getItemId();
+                var itemId = order.getItemId();
                 inventoryRepository
                         .findByItemItemId(itemId)
                         .ifPresentOrElse(inventory -> {
                             if (inventory.getCount() >= 1) {
-                                inventory.decrementCount();
+                                inventory.decrementCountBy(1);
                                 inventoryRepository.update(inventory);
-                                logger.info("ORDER RESERVED");
+                                var event = new InventoryOrderEvent(EventType.ORDER_RESERVED_FROM_INVENTORY, inventory, order);
+                                inventoryClient.sendInventoryOrderEvent(event);
+                                logger.info("ITEM " + itemId + " RESERVED");
                             } else {
                                 logger.info("ITEM OUT OF STOCK " + itemId);
                             }
                         }, () -> logger.info("ITEM " + itemId + " NOT FOUND"));
             }
+            case ORDER_REJECTED -> {}
         }
     }
 }
